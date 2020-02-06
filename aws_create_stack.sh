@@ -5,7 +5,7 @@ StackName=$sName
 
 echo "$sName Stack creation in progress..."
 
-stackID=$(aws cloudformation create-stack --stack-name $sName --template-body file://Templates/SetupEC2.yml)
+stackID=$(aws cloudformation create-stack --stack-name $sName --template-body file://AWSCloudFormationTemplates/SetupEC2.yml)
 aws cloudformation wait stack-create-complete --stack-name $sName
 
 echo $stackID
