@@ -3,25 +3,15 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.large
-      ImageId: ami-0080e4c5bc078760e
+      ImageId: ami-0c322300a1dd5dc79
       KeyName: provEC2
       SecurityGroups:
         - !Ref AppNodeSG
       UserData: !Base64 |
         #!/bin/bash
-        apt-get update -qq
-        apt-get install -y apt-transport-https ca-certificates
-        apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-        echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | tee /etc/apt/sources.list.d/docker.list
-        apt-get update -qq
-        apt-get purge lxc-docker || true
-        apt-get -y install linux-image-extra-$(uname -r) linux-image-extra-virtual
-        apt-get -y install docker-engine
-        usermod -aG docker ubuntu
-        mkdir -p /etc/systemd/system/docker.service.d
-        printf "[Service]\nExecStart=\nExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375\n" >>  /etc/systemd/system/docker.service.d/docker.conf
-        systemctl daemon-reload
-        systemctl restart docker
+        yum -y update
+        yum install java-1.8.0-openjdk
+        export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64/jre/bin/java
   AppNodeSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
